@@ -1,4 +1,4 @@
-import { builtinModules } from "module";
+// import { b/uiltinModules } from "module";
 
   
 let friends = [

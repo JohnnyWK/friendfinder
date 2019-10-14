@@ -10,20 +10,14 @@
     <script src="https://kit.fontawesome.com/706740a01b.js" crossorigin="anonymous"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai&display=swap" rel="stylesheet">
-    <!-- BOOTSTRAP -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
 </head>
 
 <body>
@@ -38,6 +32,13 @@
 
     <form action="">
         <div class="form-group">
+            <h3>About you</h3>
+            <h5 class="question">Name (required)</h5>
+            <input id="name" type="text"><br></br>
+
+            <h5 class="question">Link to Photo Image (required)</h5>
+            <input type="url" name="pic">
+
             <label for="exampleFormControlSelect1">Example select</label>
             <select class="form-control" id="a1">
                 <option value="1">1</option>
@@ -119,60 +120,61 @@
                 <option value="5">5</option>
             </select>
         </div>
-        <button type="submit">SUBMIT</button>
+        <!-- <button type="submit">SUBMIT</button> -->
+        <button type="submit" id="submit" class="btn btn-lg btn-dark" data-toggle="modal" data-target="#myModal">
+            Submit </button>
     </form>
 
 
     <script type="text/javascript">
+        $("#submit").on("click", function (event) {
+            event.preventDefault();
 
-$(".submit").on("click", function(event) {
-    event.preventDefault();
+            // Here we grab the form elements
+            var newPerson = {
+                name: $("#name").val(),
+                photo: $("image").val(),
+                scores: [
+                    $("#a1").val(),
+                    $("#a2").val(),
+                    $("#a3").val(),
+                    $("#a4").val(),
+                    $("#a5").val(),
+                    $("#a6").val(),
+                    $("#a7").val(),
+                    $("#a8").val(),
+                    $("#a9").val(),
+                    $("#a10").val()
+                ]
+            };
 
-    // Here we grab the form elements
-    var newPerson = {
-  name:$("#name").val(),
-  photo:$("image").val(),
-  scores:[
-      $("#a1").val(),
-      $("#a2").val(),
-      $("#a3").val(),
-      $("#a4").val(),
-      $("#a5").val(),
-      $("#a6").val(),
-      $("#a7").val(),
-      $("#a8").val(),
-      $("#a9").val(),
-      $("#a10").val()
-    ]
-};
+            console.log(newPerson);
 
-    console.log(newPerson);
+            // This line is the magic. It"s very similar to the standard ajax function we used.
+            // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+            // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+            // depending on if a tables is available or not.
 
-    // This line is the magic. It"s very similar to the standard ajax function we used.
-    // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-    // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-    // depending on if a tables is available or not.
+            $.post("/api/friends", newPerson,
+                function (data) {
 
-    $.post("/api/tables", newReservation,
-      function(data) {
+                    // If a table is available... tell user they are booked.
+                    if (data) {
+                        alert("You are added to Friend Finder!");
+                    }
 
-        // If a table is available... tell user they are booked.
-        if (data) {
-          alert("Yay! You are officially booked!");
-        }
+                    // If a table is available... tell user they on the waiting list.
+                    else {
+                        alert("Something didn't work there");
+                    }
 
-        // If a table is available... tell user they on the waiting list.
-        else {
-          alert("Sorry you are on the wait list");
-        }
+                    // Clear the form when submitting
+                    // $("#reserve-name").val("");
+                    // $("#reserve-phone").val("");
+                    // $("#reserve-email").val("");
+                    // $("#reserve-unique-id").val("");
 
-        // Clear the form when submitting
-        $("#reserve-name").val("");
-        $("#reserve-phone").val("");
-        $("#reserve-email").val("");
-        $("#reserve-unique-id").val("");
-
-      })});
-
+                })
+        });
     </script>
 </body>
