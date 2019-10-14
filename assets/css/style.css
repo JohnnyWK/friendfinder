@@ -1,0 +1,15 @@
+body {
+   
+}
+
+.jumbotron {
+    /* background-color: #FF8093;  */
+    max-width: 80%;
+    text-align: center;
+    display: flexbox;
+    margin-left: 10%;
+}
+
+#submitButton {
+
+}
