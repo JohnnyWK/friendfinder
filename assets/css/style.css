@@ -10,6 +10,6 @@ body {
     margin-left: 10%;
 }
 
-#submitButton {
-
+form {
+    max-width: fit-content;
 }
